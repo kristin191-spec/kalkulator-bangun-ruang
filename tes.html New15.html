@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Kalkulator Bangun Ruang Cute</title>
+
+<style>
+body{
+    font-family: "Georgia";
+    background-color: #ff92ad;
+    margin:0; padding:0; overflow:hidden;
+}
+
+/* Box Utama */
+.container{
+    width: 100%;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    background:white;
+    border-radius:25px;
+    box-shadow: 0 0 25px rgba(255, 249, 166, 0.822);
+    position:relative;
+    z-index:20;
+}
+
+h2{ text-align:center; color:#ff1493; font-size:28px; }
+
+/* Input Style */
+select, input{
+    width:98%; padding:10px;
+    border-radius:10px; border:2px solid pink;
+    margin-top:10px;
+}
+button{
+    width:100%; padding:15px; margin-top:15px;
+    font-size:20px; border:none; border-radius:15px;
+    background:#ff4bb2; color:white; cursor:pointer;
+    transition:.3s;
+}
+button:hover{ background:#d6008d; }
+
+/* Visual Decoration Box */
+.visual-box{
+    width: 100%;
+    height: 220px;
+    margin-top: 20px;
+    background: #ffe4f3;
+    border-radius: 15px;
+    border: 3px dashed #ff80bf;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.visual-box img{
+    max-height: 100%;
+    object-fit: contain;
+    opacity: .9;
+}
+
+/* Hasil dan History */
+.result, .history{
+    margin-top:20px; padding:15px;
+    border-radius:10px;
+}
+.result{ background:#ffe4fa; border-left:6px solid #ff4bb2; }
+.history{ background:#fff4c7; border-left:6px solid #ffcc00; }
+
+/* Sparkle Rain */
+.sparkle{
+    position: fixed;
+    width: 6px; height:6px;
+    background:white;
+    border-radius:50%;
+    box-shadow:0 0 10px white;
+    animation: fall 4s linear infinite;
+}
+@keyframes fall{
+ 0%{ transform:translateY(-10px) scale(1); opacity:1; }
+ 100%{ transform:translateY(100vh) scale(.2); opacity:0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Kalkulator Bangun Ruang</h2>
+
+<select id="shape" onchange="showInputs()">
+<option value="">-- pilih bangun ruang --</option>
+<option value="kubus">Kubus</option>
+<option value="balok">Balok</option>
+<option value="bola">Bola</option>
+<option value="tabung">Tabung</option>
+</select>
+
+<div id="inputs"></div>
+<button onclick="calculate()">Hitung</button>
+
+<!-- VISUAL DEKORASI -->
+<div class="visual-box" id="visualBox">
+    <img src="c:\Users\JONZ PC\Downloads\WhatsApp Image 2025-11-21 at 14.32.53.jpeg">
+</div>
+
+<div class="result" id="result">💡 Hasil akan muncul di sini.</div>
+<div class="history" id="history"><b>📜 Riwayat:</b><br></div>
+</div>
+
+<script>
+/* Sparkle Generator */
+for(let i=0;i<90;i++){
+  let s=document.createElement("div");
+  s.className="sparkle";
+  s.style.left=Math.random()*innerWidth+"px";
+  s.style.animationDuration=(2+Math.random()*3)+"s";
+  document.body.appendChild(s);
+}
+
+/* Input Handler */
+function showInputs(){
+    let s=document.getElementById("shape").value;
+    let box=document.getElementById("inputs");
+
+    if(s=="kubus") box.innerHTML=`Sisi <input id="sisi">`;
+    else if(s=="balok") box.innerHTML=`Panjang <input id="p">Lebar <input id="l">Tinggi <input id="t">`;
+    else if(s=="bola") box.innerHTML=`Jari-jari <input id="r">`;
+    else if(s=="tabung") box.innerHTML=`Jari-jari <input id="rr">Tinggi <input id="hh">`;
+}
+
+/* Hitung + History */
+function calculate(){
+    let s=document.getElementById("shape").value;
+    let lp=0, vol=0, txt="";
+
+    if(s=="kubus"){ let a=+sisi.value; lp=6*a*a; vol=a**3; txt="Kubus"; }
+    if(s=="balok"){ let P=+p.value,L=+l.value,T=+t.value; lp=2*(P*L+P*T+L*T); vol=P*L*T; txt="Balok"; }
+    if(s=="bola"){ let R=+r.value; lp=4*Math.PI*R*R; vol=(4/3)*Math.PI*R**3; txt="Bola"; }
+    if(s=="tabung"){ let R=+rr.value,H=+hh.value; lp=2*Math.PI*R*(R+H); vol=Math.PI*R*R*H; txt="Tabung"; }
+
+    document.getElementById("result").innerHTML =
+        `${txt}<br>Luas Permukaan: <b>${lp.toFixed(2)}</b><br>Volume: <b>${vol.toFixed(2)}</b>`;
+
+    document.getElementById("history").insertAdjacentHTML(
+        "beforeend",
+        `➡ ${txt}: LP=${lp.toFixed(2)}, V=${vol.toFixed(2)}<br>`
+    );
+}
+</script>
+
+</body>
+</html>
